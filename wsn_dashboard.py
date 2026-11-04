@@ -52,69 +52,12 @@ topology_editor = components.declare_component(
 st.markdown(
     """
     <style>
-      :root {
-        --graphite-bg: #17191d;
-        --graphite-panel: #22262c;
-        --graphite-panel-soft: #292e35;
-        --graphite-border: #3a414b;
-        --graphite-text: #e7e9ec;
-        --graphite-muted: #a5adb8;
-        --graphite-accent: #f59e0b;
-        --graphite-accent-soft: #fbbf24;
-        --graphite-cyan: #38bdf8;
-      }
-      .stApp {background: var(--graphite-bg); color: var(--graphite-text);}
-      [data-testid="stHeader"] {background: rgba(23,25,29,.92);}
-      .block-container {padding-top: 1.2rem; padding-bottom: 2rem; max-width: 1600px;}
-      section[data-testid="stSidebar"] {
-        background: #1d2025;
-        border-right: 1px solid var(--graphite-border);
-      }
-      [data-testid="stMetric"] {
-        background: linear-gradient(145deg, #292e35, #202329);
-        border: 1px solid var(--graphite-border);
-        padding: .8rem 1rem;
-        border-radius: 12px;
-      }
-      [data-testid="stMetricLabel"] {color: var(--graphite-muted);}
-      [data-testid="stMetricValue"] {color: var(--graphite-text);}
-      [data-testid="stTabs"] button[role="tab"] {
-        color: var(--graphite-muted);
-        border-radius: 8px 8px 0 0;
-      }
-      [data-testid="stTabs"] button[role="tab"][aria-selected="true"] {
-        color: var(--graphite-accent-soft);
-        border-bottom: 2px solid var(--graphite-accent);
-      }
-      .stButton > button, .stDownloadButton > button {
-        border: 1px solid #59616d;
-        border-radius: 9px;
-        transition: border-color .15s ease, background .15s ease;
-      }
-      .stButton > button[kind="primary"] {
-        background: var(--graphite-accent);
-        border-color: var(--graphite-accent);
-        color: #17191d;
-        font-weight: 700;
-      }
-      .stButton > button:hover, .stDownloadButton > button:hover {
-        border-color: var(--graphite-accent);
-        color: var(--graphite-accent-soft);
-      }
-      [data-testid="stExpander"] {
-        border: 1px solid var(--graphite-border);
-        border-radius: 10px;
-        background: rgba(41,46,53,.45);
-      }
-      [data-testid="stDataFrame"], [data-testid="stTable"] {
-        border: 1px solid var(--graphite-border);
-        border-radius: 9px;
-        overflow: hidden;
-      }
-      input, textarea {caret-color: var(--graphite-accent);}
-      .small-note {font-size: .88rem; color: var(--graphite-muted);}
-      h1, h2, h3 {letter-spacing: -.02em;}
-      hr {border-color: var(--graphite-border);}
+      .block-container {padding-top: 1.2rem; padding-bottom: 2rem;}
+      [data-testid="stMetric"] {background: rgba(120,140,160,.08);
+        border: 1px solid rgba(120,140,160,.22); padding: .7rem .9rem;
+        border-radius: 12px;}
+      section[data-testid="stSidebar"] {border-right: 1px solid rgba(120,140,160,.2);}
+      .small-note {font-size: .88rem; opacity: .82;}
     </style>
     """,
     unsafe_allow_html=True,
@@ -327,7 +270,7 @@ def build_network_figure(net, rates, energy_fraction, selected_node=None, sim_ti
     fig.update_layout(
         title=title, height=570, margin=dict(l=15, r=15, t=55, b=15),
         xaxis_title="x position (m)", yaxis_title="y position (m)",
-        template="plotly_dark", clickmode="event+select",
+        template="plotly_white", clickmode="event+select",
         legend=dict(orientation="h", yanchor="bottom", y=1.01, xanchor="right", x=1),
     )
     fig.update_xaxes(range=[-5, max(105, float(np.max(pos[:, 0])) + 5)], zeroline=False)
@@ -350,7 +293,7 @@ def make_energy_figure(net, power, lifetime, sim_time):
     fig.update_layout(
         title="Battery energy remaining over time (average-power model)",
         xaxis_title="Time (s)", yaxis_title="Remaining battery energy (J)",
-        height=430, template="plotly_dark", margin=dict(l=10, r=10, t=55, b=10),
+        height=430, template="plotly_white", margin=dict(l=10, r=10, t=55, b=10),
         legend_title="Sensor",
     )
     return fig
@@ -500,7 +443,7 @@ with tabs[0]:
             text=[f"{baseline['lifetime']:.3f}s", f"{lp['lifetime']:.3f}s"],
             textposition="outside",
         )])
-        fig.update_layout(height=350, yaxis_title="Lifetime (s)", template="plotly_dark",
+        fig.update_layout(height=350, yaxis_title="Lifetime (s)", template="plotly_white",
                           margin=dict(l=10, r=10, t=25, b=10))
         st.plotly_chart(fig, width="stretch")
         st.subheader("Network snapshot")
@@ -763,7 +706,7 @@ with tabs[3]:
                           for i in prices],
         ))
         price_fig.update_layout(height=350, xaxis_title="Sensor", yaxis_title="Shadow price (s/J)",
-                                template="plotly_dark", margin=dict(l=10, r=10, t=25, b=10))
+                                template="plotly_white", margin=dict(l=10, r=10, t=25, b=10))
         st.plotly_chart(price_fig, width="stretch")
         st.subheader("Complementary-slackness and bottleneck checks")
         slack_rows = []
@@ -792,7 +735,7 @@ with tabs[3]:
         st.plotly_chart(go.Figure(go.Bar(x=burden["Node"].map(lambda i: "SOURCE" if i == net.source else str(i)), y=burden["Energy used (J)"],
                                          marker_color="#0d9488")).update_layout(
             height=320, xaxis_title="Sensor", yaxis_title="Energy used (J)",
-            template="plotly_dark", margin=dict(l=10, r=10, t=25, b=10)),
+            template="plotly_white", margin=dict(l=10, r=10, t=25, b=10)),
             width="stretch")
         st.subheader("LP primal diagnostics")
         eq_resid = np.asarray(lp["solver_result"].eqlin.residual)
@@ -868,7 +811,7 @@ with tabs[4]:
                 fig_sweep.add_trace(go.Scatter(x=sweep_df["Value"], y=sweep_df["Shortest-path lifetime (s)"],
                                                mode="lines+markers", name="Shortest path"))
                 fig_sweep.update_layout(height=350, xaxis_title="Swept parameter", yaxis_title="Lifetime (s)",
-                                        template="plotly_dark")
+                                        template="plotly_white")
                 st.plotly_chart(fig_sweep, width="stretch")
                 st.download_button("Download sensitivity sweep CSV", sweep_df.to_csv(index=False).encode("utf-8"),
                                     "wsn_sensitivity_sweep.csv", "text/csv")
@@ -922,7 +865,7 @@ with tabs[4]:
             fig = go.Figure()
             fig.add_trace(go.Box(y=valid["LP lifetime (s)"], name="LP optimized", boxpoints="all"))
             fig.add_trace(go.Box(y=valid["Shortest-path lifetime (s)"], name="Shortest path", boxpoints="all"))
-            fig.update_layout(height=380, yaxis_title="Lifetime (s)", template="plotly_dark",
+            fig.update_layout(height=380, yaxis_title="Lifetime (s)", template="plotly_white",
                               margin=dict(l=10, r=10, t=25, b=10))
             st.plotly_chart(fig, width="stretch")
             st.write("**LP lifetime summary**")

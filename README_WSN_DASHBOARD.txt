@@ -106,8 +106,3 @@ simulator were run on sample networks; a selected-link removal changed packet
 outcomes on tested route-critical links. A live Streamlit UI launch could not
 be performed in the build environment because Streamlit is not installed
 there. Install requirements.txt and launch locally before a live demonstration.
-
-
-UI theme
--------
-This package uses the Industrial Graphite dark theme with amber accents. The Streamlit theme is configured in .streamlit/config.toml; dashboard CSS, Plotly chart templates and the embedded topology editor styling are aligned to the same palette. Simulation and optimization logic are unchanged.
